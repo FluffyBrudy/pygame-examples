@@ -33,13 +33,27 @@ class Raycast:
         pygame.draw.line(self.screen, "red", self.caster.pos, pos, 3)
 
     def cast_rays(self):
-        pos = self.caster.pos.copy()
         angle = self.caster.angle - FOV / 2
         for i in range(NUM_RAYS):
             ray_angle = angle + i * STEP_ANGLE
             ray_pos = self.cast_ray(self.caster.pos.copy(), ray_angle, self.map)
             self.draw_line(ray_pos)
+        radius = 30
+        rect = (
+            self.caster.pos.x - radius,
+            self.caster.pos.y - radius,
+            radius * 2,
+            radius * 2
+        )
 
+        pygame.draw.arc(
+            self.screen,
+            "white",
+            rect,
+            -self.caster.angle - FOV/2,
+            -self.caster.angle + FOV/2,
+            2
+        )
 
     def handle_event(self):
         for event in pygame.event.get():
