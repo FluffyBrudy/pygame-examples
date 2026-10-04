@@ -1,0 +1,45 @@
+{
+  "version": 1,
+  "folders": [
+    {
+      "id": "f_1",
+      "name": "entities",
+      "parent": null
+    },
+    {
+      "id": "f_2",
+      "name": "items",
+      "parent": null
+    }
+  ],
+  "items": [
+    {
+      "path": "../assets/Characters/eagle/Sprites/attack/eagle-attack-1.png",
+      "folder": "f_1"
+    },
+    {
+      "path": "../assets/Characters/Opossum/opossum/opossum-2.png",
+      "folder": "f_1"
+    },
+    {
+      "path": "../assets/Characters/frog/Sprites/idle/frog-idle-1.png",
+      "folder": "f_1"
+    },
+    {
+      "path": "../assets/Characters/Foxy/idle/sprites/f-01.png",
+      "folder": "f_1"
+    },
+    {
+      "path": "../assets/Misc/Sunnyland items/Sprites/gem/gem-1.png",
+      "folder": "f_2"
+    },
+    {
+      "path": "../assets/Misc/Sunnyland items/Sprites/cherry/cherry-1.png",
+      "folder": "f_2"
+    },
+    {
+      "path": "../assets/environment/tileset.png",
+      "folder": null
+    }
+  ]
+}

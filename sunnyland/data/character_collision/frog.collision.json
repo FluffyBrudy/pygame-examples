@@ -1,0 +1,16 @@
+{
+  "name": "frog",
+  "shape": {
+    "type": "circle",
+    "radius": 11.002710027100274,
+    "offset": [
+      16.314363143631436,
+      17.582655826558266
+    ]
+  },
+  "properties": {
+    "collision_layer": 4,
+    "collision_mask": 3
+  },
+  "image_path": "../assets/Characters/frog/Spritesheets/spritesheet.png"
+}

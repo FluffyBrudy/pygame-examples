@@ -1,0 +1,17 @@
+{
+  "name": "opossum",
+  "shape": {
+    "type": "rectangle",
+    "width": 21.923591613883225,
+    "height": 14.171909485491023,
+    "offset": [
+      3.89949540266797,
+      9.71661022504958
+    ]
+  },
+  "properties": {
+    "collision_layer": 4,
+    "collision_mask": 3
+  },
+  "image_path": "../assets/Characters/Opossum/spritesheet.png"
+}

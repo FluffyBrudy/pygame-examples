@@ -1,0 +1,255 @@
+{
+  "spritesheet_path": "../../assets/Characters/Foxy/atlas.png",
+  "tile_size": [
+    33,
+    32
+  ],
+  "grid_offset": [
+    0,
+    0
+  ],
+  "animations": {
+    "idle": {
+      "name": "idle",
+      "frames": [
+        {
+          "variant_id": 0,
+          "duration_ms": 100.0
+        },
+        {
+          "variant_id": 1,
+          "duration_ms": 100.0
+        },
+        {
+          "variant_id": 2,
+          "duration_ms": 100.0
+        },
+        {
+          "variant_id": 3,
+          "duration_ms": 100.0
+        }
+      ],
+      "loop": true,
+      "fps": 60.0
+    },
+    "run": {
+      "name": "run",
+      "frames": [
+        {
+          "variant_id": 6,
+          "duration_ms": 100.0
+        },
+        {
+          "variant_id": 7,
+          "duration_ms": 100.0
+        },
+        {
+          "variant_id": 8,
+          "duration_ms": 100.0
+        },
+        {
+          "variant_id": 9,
+          "duration_ms": 100.0
+        },
+        {
+          "variant_id": 10,
+          "duration_ms": 100.0
+        },
+        {
+          "variant_id": 11,
+          "duration_ms": 100.0
+        }
+      ],
+      "loop": true,
+      "fps": 60.0
+    },
+    "climb": {
+      "name": "climb",
+      "frames": [
+        {
+          "variant_id": 12,
+          "duration_ms": 100.0
+        },
+        {
+          "variant_id": 13,
+          "duration_ms": 100.0
+        },
+        {
+          "variant_id": 14,
+          "duration_ms": 100.0
+        },
+        {
+          "variant_id": 15,
+          "duration_ms": 100.0
+        }
+      ],
+      "loop": true,
+      "fps": 60.0
+    },
+    "duck": {
+      "name": "duck",
+      "frames": [
+        {
+          "variant_id": 18,
+          "duration_ms": 100.0
+        },
+        {
+          "variant_id": 19,
+          "duration_ms": 100.0
+        },
+        {
+          "variant_id": 20,
+          "duration_ms": 100.0
+        }
+      ],
+      "loop": false,
+      "fps": 60.0
+    },
+    "hurt": {
+      "name": "hurt",
+      "frames": [
+        {
+          "variant_id": 24,
+          "duration_ms": 100.0
+        },
+        {
+          "variant_id": 25,
+          "duration_ms": 100.0
+        }
+      ],
+      "loop": true,
+      "fps": 60.0
+    },
+    "jump": {
+      "name": "jump",
+      "frames": [
+        {
+          "variant_id": 30,
+          "duration_ms": 100.0
+        }
+      ],
+      "loop": true,
+      "fps": 60.0
+    },
+    "fall": {
+      "name": "fall",
+      "frames": [
+        {
+          "variant_id": 31,
+          "duration_ms": 100.0
+        }
+      ],
+      "loop": true,
+      "fps": 60.0
+    },
+    "hurt2": {
+      "name": "hurt2",
+      "frames": [
+        {
+          "variant_id": 42,
+          "duration_ms": 100.0
+        }
+      ],
+      "loop": true,
+      "fps": 60.0
+    },
+    "dizzy": {
+      "name": "dizzy",
+      "frames": [
+        {
+          "variant_id": 48,
+          "duration_ms": 100.0
+        },
+        {
+          "variant_id": 49,
+          "duration_ms": 100.0
+        },
+        {
+          "variant_id": 50,
+          "duration_ms": 100.0
+        },
+        {
+          "variant_id": 51,
+          "duration_ms": 100.0
+        },
+        {
+          "variant_id": 52,
+          "duration_ms": 100.0
+        },
+        {
+          "variant_id": 53,
+          "duration_ms": 100.0
+        }
+      ],
+      "loop": true,
+      "fps": 60.0
+    },
+    "wall_grab": {
+      "name": "wall_grab",
+      "frames": [
+        {
+          "variant_id": 36,
+          "duration_ms": 100.0
+        }
+      ],
+      "loop": false,
+      "fps": 60.0
+    },
+    "wall_grab_turn": {
+      "name": "wall_grab_turn",
+      "frames": [
+        {
+          "variant_id": 37,
+          "duration_ms": 100.0
+        }
+      ],
+      "loop": false,
+      "fps": 60.0
+    },
+    "roll": {
+      "name": "roll",
+      "frames": [
+        {
+          "variant_id": 54,
+          "duration_ms": 100.0
+        },
+        {
+          "variant_id": 55,
+          "duration_ms": 100.0
+        },
+        {
+          "variant_id": 56,
+          "duration_ms": 100.0
+        },
+        {
+          "variant_id": 57,
+          "duration_ms": 100.0
+        }
+      ],
+      "loop": true,
+      "fps": 60.0
+    },
+    "lookup": {
+      "name": "lookup",
+      "frames": [
+        {
+          "variant_id": 60,
+          "duration_ms": 100.0
+        }
+      ],
+      "loop": false,
+      "fps": 60.0
+    },
+    "victory": {
+      "name": "victory",
+      "frames": [
+        {
+          "variant_id": 66,
+          "duration_ms": 100.0
+        }
+      ],
+      "loop": false,
+      "fps": 60.0
+    }
+  }
+}

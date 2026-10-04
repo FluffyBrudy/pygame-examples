@@ -1,0 +1,16 @@
+{
+  "name": "gem",
+  "shape": {
+    "type": "circle",
+    "radius": 4.692437553095608,
+    "offset": [
+      7.1138211382113825,
+      6.093495934959347
+    ]
+  },
+  "properties": {
+    "collision_layer": 4,
+    "collision_mask": 2
+  },
+  "image_path": "../assets/Misc/Sunnyland items/Spritesheets/gem.png"
+}

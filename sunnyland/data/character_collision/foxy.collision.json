@@ -1,0 +1,17 @@
+{
+  "name": "foxy",
+  "shape": {
+    "type": "rectangle",
+    "width": 10.75,
+    "height": 19.513761553594854,
+    "offset": [
+      10.096242756518322,
+      12.429048755486654
+    ]
+  },
+  "properties": {
+    "collision_layer": 2,
+    "collision_mask": 13
+  },
+  "image_path": "../assets/Characters/Foxy/atlas.png"
+}
