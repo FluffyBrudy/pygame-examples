@@ -27,7 +27,7 @@ class Game:
 
         self.map_path = PROJECT_PATH / "data/maps"
         self.levels = [mapfile for mapfile in self.map_path.iterdir() if mapfile.suffix == ".json"]
-        self.pointer = 1
+        self.pointer = int(sys.argv[1]) % len(self.levels) if (len(sys.argv) > 1 and sys.argv[1].isnumeric()) else 0
 
         self.scene_manager = SceneManager()
         self.scene_manager.change_scene(
@@ -46,9 +46,8 @@ class Game:
         if isinstance(scene, LevelScene) and scene.can_transition():
             level_pointer = self.pointer + 1
             if level_pointer >= len(self.levels):
-                return
-            else:
-                self.pointer = level_pointer
+                level_pointer = 0
+            self.pointer = level_pointer
             self.scene_manager.change_scene(
                 LevelScene(),
                 level_path=self.levels[self.pointer],

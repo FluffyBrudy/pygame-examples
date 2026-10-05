@@ -14,15 +14,17 @@ class Foxy(Character):
         x: float,
         y: float,
     ) -> None:
-        super().__init__("foxy.anim", "foxy.collision", "idle", x, y, 0.25, 10)
-        self.input_x = 0
+        super().__init__("foxy.anim", "foxy.collision", "idle", x, y, 1, 10)
         self.jump_pressed = False
         self.roll_pressed = False
         self.just_jumped = False
         self.just_landed = False
         self.ground_angle = None
+        self.direction = 1
 
     def get_state(self) -> str:
+        if self.hit_cd != 0:
+            return "hurt"
         if self.roll_pressed or (self.ground_angle and int(self.ground_angle) != 0):
             return "roll"
         if self.vy < 0:
@@ -36,23 +38,23 @@ class Foxy(Character):
     def update(self, dt: float):
         speed_scale = 1
         keys = pygame.key.get_pressed()
-
         flat_ground_roll = (self.ground_angle is None) or (int(self.ground_angle) == 0)
 
-        self.input_x = keys[pygame.K_RIGHT] - keys[pygame.K_LEFT]
+        input_x = keys[pygame.K_RIGHT] - keys[pygame.K_LEFT]
+        if input_x != 0:
+            self.direction = input_x
 
         if self.current_state == "roll":
             if flat_ground_roll:
                 speed_scale = 2
-                self.input_x = -1 if self.flipped else 1
-            elif self.input_x * self.ground_angle <= 0:  # pyright: ignore
-                self.input_x = -1 * (-1 if self.ground_angle < 0 else 1)
+                input_x = self.direction
+            elif input_x == 0:  # pyright: ignore
+                input_x = -1 if self.ground_angle > 0 else 1
                 speed_scale = 1.5
-            elif self.input_x * self.ground_angle > 0:  # pyright: ignore
+            else:
                 speed_scale = 0.8
 
-        if self.input_x != 0:
-            self.flipped = self.input_x < 0
+        self.flipped = self.direction == -1
         self.jump_pressed = keys[pygame.K_UP]
         self.roll_pressed = keys[pygame.K_SPACE]
 
@@ -64,7 +66,7 @@ class Foxy(Character):
         elif self.jump_pressed:
             self.vy = -400
 
-        self.vx = move_towards(self.vx, self.input_x * self.collision_runner.horizontal_speed * speed_scale, dt * 450)
+        self.vx = move_towards(self.vx, input_x * self.collision_runner.horizontal_speed * speed_scale, dt * 450)
         res = self.collision_runner.move_platformer_with_slide(self, None, None, dt, velocity=(self.vx, self.vy))
         self.ground_angle = res.ground_angle
         # -

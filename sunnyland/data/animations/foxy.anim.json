@@ -1,13 +1,7 @@
 {
   "spritesheet_path": "../../assets/Characters/Foxy/atlas.png",
-  "tile_size": [
-    33,
-    32
-  ],
-  "grid_offset": [
-    0,
-    0
-  ],
+  "tile_size": [33, 32],
+  "grid_offset": [0, 0],
   "animations": {
     "idle": {
       "name": "idle",
@@ -227,7 +221,7 @@
         }
       ],
       "loop": true,
-      "fps": 60.0
+      "fps": 120.0
     },
     "lookup": {
       "name": "lookup",

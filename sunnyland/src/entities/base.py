@@ -15,7 +15,8 @@ class Character(ABC, ICollidableSprite):
     till synced"""
 
     collision_runner: "CollisionRunner"
-    solid_tile_at: Callable[[ICollidable, float, float, float], bool]
+    solid_tile_at: Callable[[ICollidable, float, bool], bool]
+    out_of_bound: Callable[[ICollidable], bool]
 
     sig_hurt: Signal = signal()  # pyright: ignore
     sig_died: Signal = signal()  # pyright: ignore
@@ -25,6 +26,9 @@ class Character(ABC, ICollidableSprite):
             raise ValueError("Collision runner is not attached")
         if getattr(cls, "solid_tile_at", None) is None:
             raise ValueError("Solid tile checker not implemented")
+        if getattr(cls, "out_of_bound", None) is None:
+            raise ValueError("Out of bound not implemented")
+
         return super().__new__(cls)
 
     def __init__(
@@ -75,7 +79,7 @@ class Character(ABC, ICollidableSprite):
         if self.hit_cd > 0:
             self.hit_cd = max(self.hit_cd - dt, 0)
 
-    def on_collision(self, full: bool = False):
+    def on_collision(self, full: bool = False, **kwargs):
         if self.is_dead:
             return
         if full:
@@ -88,7 +92,8 @@ class Character(ABC, ICollidableSprite):
             self.is_dead = True
             self.sig_died.emit(self)
         else:
-            self.sig_hurt.emit(self)
+            print(kwargs)
+            self.sig_hurt.emit(self, **kwargs)
 
     def manage_state(self):
         next_state = self.get_state()

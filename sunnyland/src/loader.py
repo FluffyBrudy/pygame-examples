@@ -69,6 +69,7 @@ class SharedData:
         sound_path = PROJECT_PATH / "assets/SunnyLand Music/pack1"
         self.soundmanager.add_sound(sound_path / "arcade.ogg", "arcade", "main")
         self.soundmanager.add_sound(sound_path / "Retro PickUp 18.wav", "pickup", "sfx")
+        self.soundmanager.add_sound(sound_path / "bird_death.ogg", "bird_death", "sfx")
 
     def __new__(cls, *args, **kwargs):
         if cls.__instance is None:
