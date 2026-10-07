@@ -2,7 +2,6 @@ from pathlib import Path
 from typing import cast, override
 
 import pygame
-from pygkit import Signal
 from tilemap_parser import (
     Camera,
     CollisionRunner,
@@ -32,21 +31,14 @@ class LevelScene(Scene):
         pass
 
     def exit(self):
-        self._disconnect_signals(getattr(self, "foxy", None))
-        for obj in getattr(self, "objct_container", []):
-            self._disconnect_signals(obj)
-        for fx in getattr(self, "fx_container", []):
-            self._disconnect_signals(fx)
-        self.soundmanager.stop_all()
+        soundmanager = getattr(self, "soundmanager", None)
+        if soundmanager is not None:
+            soundmanager.stop_all()
 
     @staticmethod
-    def _disconnect_signals(obj: object | None) -> None:
-        if obj is None:
-            return
-        for name in ("sig_jumped", "sig_landed", "sig_hurt", "sig_died", "sig_collected"):
-            sig = obj.__dict__.get(name) if hasattr(obj, "__dict__") else None
-            if sig is not None:
-                sig.disconnect_all()
+    def _subscribe(callbacks: list, callback) -> None:
+        if callback not in callbacks:
+            callbacks.append(callback)
 
     def load(self, **kwargs):
         level_path = kwargs.get("level_path", None)
@@ -67,7 +59,8 @@ class LevelScene(Scene):
         self.collision_runner = CollisionRunner.from_world(self.physics_world)
         self.tilelayer_renderer = TileLayerRenderer(mapdata)
         self.background = LevelData().backgrounds
-        self.level_completion_area = LevelData().level_completion_node
+        self.level_completion_area = LevelData().area_nodes["level_completed"][0]
+        self.stair_node_areas = LevelData().area_nodes["stair"]
 
         Character.collision_runner = self.collision_runner
         Character.solid_tile_at = self.solid_tile_at
@@ -77,7 +70,7 @@ class LevelScene(Scene):
         self.foxy = Foxy(x, y)
         self._connect_foxy(self.foxy)
 
-        self.camera = Camera(vw, vh)
+        self.camera = Camera(vw, vh, "deadzone")
         self.camera.follow(self.foxy)
         self.camera.set_bounds_from_map(mapdata)
 
@@ -112,17 +105,17 @@ class LevelScene(Scene):
         self.soundmanager.play("arcade", "main")
 
     def _connect_foxy(self, foxy: Foxy) -> None:
-        foxy.sig_jumped.connect(self._on_foxy_jump)
-        foxy.sig_landed.connect(self._on_foxy_land)
-        foxy.sig_hurt.connect(self._on_foxy_hurt)
+        self._subscribe(foxy.on_jumped, self._on_foxy_jump)
+        self._subscribe(foxy.on_landed, self._on_foxy_land)
+        self._subscribe(foxy.on_hurt, self._on_foxy_hurt)
 
     def _connect_object(self, obj: Character | Item) -> None:
         if isinstance(obj, Character):
-            obj.sig_hurt.connect(self._on_entity_hurt)
-            obj.sig_died.connect(self._on_entity_died)
+            self._subscribe(obj.on_hurt, self._on_entity_hurt)
+            self._subscribe(obj.on_died, self._on_entity_died)
         if isinstance(obj, Item):
-            obj.sig_collected.connect(self._on_item_collected)
-            obj.sig_collected.connect(lambda _: self.soundmanager.play("pickup"))
+            self._subscribe(obj.on_collected, self._on_item_collected)
+            self._subscribe(obj.on_collected, lambda _: self.soundmanager.play("pickup"))
 
     def _on_foxy_hurt(self, foxy: Foxy, **kwargs):
         print(kwargs)
@@ -154,6 +147,20 @@ class LevelScene(Scene):
         fx = Item(x, y, "gem.collision", anim_stem, collidable=False)
         self.fx_container.append(fx)
 
+    def handle_foxy_climbing(self, dt: float):
+        colliding_node = None
+        l, t, r, b = get_shape_aabb(self.foxy.x, self.foxy.y, self.foxy.collision_shape)
+        for stair_node in self.stair_node_areas:
+            if stair_node.rect.colliderect((l, t, r - l, b - t)):
+                colliding_node = stair_node
+                self.foxy.vy = 0
+                break
+
+        self.foxy.climbing_stair = colliding_node is not None
+        if colliding_node is not None and (b - colliding_node.rect.top) < Foxy.PARK_FEET_BELOW_TOP:
+            want = colliding_node.rect.top - b + Foxy.PARK_FEET_BELOW_TOP
+            self.foxy.y += min(want, Foxy.CLIMB_SPEED * dt)
+
     def can_transition(self):
         return self.level_completion_area.contains_point((self.foxy.x, self.foxy.y))
 
@@ -178,6 +185,7 @@ class LevelScene(Scene):
         return self.physics_world.cell_has_collision((tile_x, tile_y))
 
     def update(self, dt: float):
+        self.handle_foxy_climbing(dt)
         self.foxy.update(dt)
         self.camera.update(dt)
         for i in range(len(self.objct_container) - 1, -1, -1):
@@ -185,14 +193,12 @@ class LevelScene(Scene):
             obj.update(dt)
             if obj.can_kill():
                 self.object_collision_manager.remove_object(obj)
-                self._disconnect_signals(obj)
                 del self.objct_container[i]
 
         for i in range(len(self.fx_container) - 1, -1, -1):
             fx = self.fx_container[i]
             fx.update(dt)
             if fx.animation.finished:
-                self._disconnect_signals(fx)
                 del self.fx_container[i]
 
         for hit in self.object_collision_manager.check_all_collisions():

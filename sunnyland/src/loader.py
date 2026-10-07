@@ -3,9 +3,11 @@ from typing import Literal
 
 import pygame
 from pygame import Font
+from pygame.rect import Rect
 from pygame.surface import Surface
 from pygkit.audio import SoundManager
 from tilemap_parser import (
+    AreaNode,
     CharacterCollision,
     SpriteAnimationSet,
     TilemapData,
@@ -88,16 +90,23 @@ class LevelData:
 
     def preload(self, mapdata: TilemapData):
         self.backgrounds: list[Surface] = []
+        self.background_layers: list[tuple[str, Surface]] = []
         self.foxy_spwn_point = (0, 0)
         self.entity_spawn_points: dict[str, list[tuple[float, float]]] = defaultdict(list)
         self.level_completion_node = next(node for node in mapdata.area_nodes if node.name == "level_completed")
+        self.area_nodes: dict[str, list[AreaNode]] = defaultdict(list)
 
         scale = mapdata.render_scale
+
+        for area_node in mapdata.area_nodes:
+            self.area_nodes[area_node.name].append(area_node)
+
         for parsed_layer in mapdata.get_layers(layer_type="image"):
             surface = mapdata.get_placed_image_layer_surface(parsed_layer.name, render_scale=scale)
             if surface is None:
                 continue
             self.backgrounds.append(surface)
+            self.background_layers.append((parsed_layer.name, surface))
 
         for layer in mapdata.get_layers(layer_type="object"):
             for surf, x, y, oid in mapdata.get_object_surfaces(layer_id_or_name=layer.id, scaled=True):

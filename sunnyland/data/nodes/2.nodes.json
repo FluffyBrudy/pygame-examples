@@ -1,0 +1,64 @@
+{
+  "version": 2,
+  "groups": [
+    "Group 1"
+  ],
+  "nodes": [
+    {
+      "node_id": "f07b0908-21f3-49f0-be98-4411b52de2d2",
+      "name": "level_completed",
+      "node_type": "area",
+      "area": {
+        "x": 449,
+        "y": 141,
+        "w": 32,
+        "h": 56
+      },
+      "layer_name": "tiles",
+      "properties": {},
+      "group": null
+    },
+    {
+      "node_id": "2b51586b-a681-41b9-a99a-954f716503dd",
+      "name": "spikes",
+      "node_type": "area",
+      "area": {
+        "x": 288,
+        "y": 199,
+        "w": 159,
+        "h": 11
+      },
+      "layer_name": "tiles",
+      "properties": {},
+      "group": null
+    },
+    {
+      "node_id": "f42091b7-0e9d-461f-9367-cffbfb05d76b",
+      "name": "stair",
+      "node_type": "area",
+      "area": {
+        "x": 416,
+        "y": 81,
+        "w": 16,
+        "h": 63
+      },
+      "layer_name": "tileprops",
+      "properties": {},
+      "group": "Group 1"
+    },
+    {
+      "node_id": "866bd9cc-bbfb-4af5-9800-95a35aa3c1ab",
+      "name": "stair",
+      "node_type": "area",
+      "area": {
+        "x": 287,
+        "y": 81,
+        "w": 16,
+        "h": 92
+      },
+      "layer_name": "tileprops",
+      "properties": {},
+      "group": "Group 1"
+    }
+  ]
+}

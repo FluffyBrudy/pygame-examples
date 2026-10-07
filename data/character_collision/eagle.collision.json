@@ -1,0 +1,16 @@
+{
+  "name": "eagle",
+  "shape": {
+    "type": "circle",
+    "radius": 13.665417460656409,
+    "offset": [
+      17.34417344173442,
+      22.88482384823848
+    ]
+  },
+  "properties": {
+    "collision_layer": 4,
+    "collision_mask": 2
+  },
+  "image_path": "../assets/Characters/eagle/Spritesheets/eagle-attack.png"
+}

@@ -34,11 +34,11 @@
       "folder": "f_2"
     },
     {
-      "path": "../assets/environment/tileset.png",
-      "folder": null
+      "path": "../assets/Misc/Sunnyland items/Sprites/cherry/cherry-1.png",
+      "folder": "f_2"
     },
     {
-      "path": "../assets/Misc/Sunnyland items/Sprites/cherry/cherry-1.png",
+      "path": "../assets/environment/tileset.png",
       "folder": null
     }
   ]

@@ -23,11 +23,6 @@ class Enemy(Character):
     def update(self, dt: float):
         return super().update(dt)
 
-    def render(self, surface: pygame.Surface, offset: tuple[float, float]):
-        frame = self.prepare_render()
-        if frame is not None:
-            surface.blit(frame, (self.x - offset[0], self.y - offset[1]))
-
 
 class Eagle(Enemy):
     def __init__(self, x: float, y: float) -> None:
@@ -46,6 +41,11 @@ class Eagle(Enemy):
         self.displacement -= dt * 100
         self.collision_runner.move_grounded(self, None, None, dt, velocity=(0, self.vy))
         return super().update(dt)
+
+    def render(self, surface: pygame.Surface, offset: tuple[float, float]):
+        frame = self.prepare_render()
+        if frame is not None:
+            surface.blit(frame, (self.x - offset[0], self.y - offset[1]))
 
 
 class Opossum(Enemy):
@@ -70,6 +70,11 @@ class Opossum(Enemy):
         self.vx = self.direction * self.speed
         super().update(dt)
 
+    def render(self, surface: pygame.Surface, offset: tuple[float, float]):
+        frame = self.prepare_render()
+        if frame is not None:
+            surface.blit(frame, (self.x - offset[0], self.y - offset[1]))
+
 
 class Frog(Enemy):
     def __init__(self, x: float, y: float) -> None:
@@ -84,15 +89,27 @@ class Frog(Enemy):
         return "idle"
 
     def update(self, dt: float):
-        self.collision_runner.move_grounded(self, None, None, dt)
+        zero_factor = 0 if not self.jumping else 1
+        res = self.collision_runner.move_platformer(self, None, None, dt, self.direction * zero_factor)
+        hit_wall_x = res.hit_wall_x
+        no_tile_ahead = not self.solid_tile_at(self, self.direction, False)
+        if self.on_ground and (hit_wall_x or no_tile_ahead):
+            self.direction *= -1
 
         self.flipped = self.vx < 0
         if self.jumping > 0:
             self.jumping = max(self.jumping - 1, 0)
             self.vx = self.direction * self.speed
+            if self.on_ground:
+                self.vy -= 400
         elif random() < 0.01:
             self.jumping = choice([100, 150])
             self.direction *= -1
         else:
             self.vx = 0
         return super().update(dt)
+
+    def render(self, surface: pygame.Surface, offset: tuple[float, float]):
+        frame = self.prepare_render()
+        if frame is not None:
+            surface.blit(frame, (self.x - offset[0], self.y - offset[1]))

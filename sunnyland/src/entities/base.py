@@ -3,10 +3,10 @@ from collections.abc import Callable
 
 import pygame
 from pygame import Surface
-from pygkit import Signal, signal
 from tilemap_parser import AnimationPlayer, CollisionRunner, ICollidable, ICollidableSprite
 
 from src.loader import SharedData
+from src.utils.index import emit_callbacks
 
 
 class Character(ABC, ICollidableSprite):
@@ -17,9 +17,6 @@ class Character(ABC, ICollidableSprite):
     collision_runner: "CollisionRunner"
     solid_tile_at: Callable[[ICollidable, float, bool], bool]
     out_of_bound: Callable[[ICollidable], bool]
-
-    sig_hurt: Signal = signal()  # pyright: ignore
-    sig_died: Signal = signal()  # pyright: ignore
 
     def __new__(cls, *args, **kwargs):
         if getattr(cls, "collision_runner", None) is None:
@@ -64,6 +61,9 @@ class Character(ABC, ICollidableSprite):
         self.max_hit_cd = max_hit_cd
         self.is_dead = False
 
+        self.on_hurt: list[Callable] = []
+        self.on_died: list[Callable] = []
+
     @abstractmethod
     def get_state(self) -> str: ...
     @abstractmethod
@@ -90,10 +90,10 @@ class Character(ABC, ICollidableSprite):
 
         if self.hit_count > self.max_hit_count and not self.is_dead:
             self.is_dead = True
-            self.sig_died.emit(self)
+            emit_callbacks(self.on_died, self)
         else:
             print(kwargs)
-            self.sig_hurt.emit(self, **kwargs)
+            emit_callbacks(self.on_hurt, self, **kwargs)
 
     def manage_state(self):
         next_state = self.get_state()

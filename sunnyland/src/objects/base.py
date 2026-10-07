@@ -1,13 +1,11 @@
 from pygame import Surface
-from pygkit import Signal, signal
 from tilemap_parser import AnimationPlayer, ICollidable
 
 from src.loader import SharedData
+from src.utils.index import emit_callbacks
 
 
 class Item(ICollidable):
-    sig_collected: Signal = signal()  # pyright: ignore
-
     def __init__(
         self,
         x: float,
@@ -25,6 +23,7 @@ class Item(ICollidable):
         self.collision_mask = collision_data.collision_mask if collidable else 0
         self.animation = AnimationPlayer(animation_set, next(iter(animation_set.library.animations)))
         self.is_dead = False
+        self.on_collected: list = []
 
     def update(self, dt: float):
         self.animation.update(dt * 1000)
@@ -39,7 +38,7 @@ class Item(ICollidable):
         if self.is_dead:
             return
         self.is_dead = True
-        self.sig_collected.emit(self)
+        emit_callbacks(self.on_collected, self)
 
     def can_kill(self):
         return self.is_dead

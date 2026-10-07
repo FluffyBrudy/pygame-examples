@@ -1,0 +1,16 @@
+{
+  "name": "cherry",
+  "shape": {
+    "type": "circle",
+    "radius": 5.982380987455303,
+    "offset": [
+      6.829268292682927,
+      10.926829268292686
+    ]
+  },
+  "properties": {
+    "collision_layer": 4,
+    "collision_mask": 2
+  },
+  "image_path": "../assets/Misc/Sunnyland items/Spritesheets/cherry.png"
+}
